@@ -1,5 +1,6 @@
 import { StargateClient, IndexedTx } from "@cosmjs/stargate"
 import { Tx } from "cosmjs-types/cosmos/tx/v1beta1/tx"
+import { MsgSend } from "cosmjs-types/cosmos/bank/v1beta1/tx"
 
 const rpc = "https://rpc.sentry-01.theta-testnet.polypore.xyz"
 const aliceAddress = "cosmos17tvd4hcszq7lcxuwzrqkepuau9fye3dal606zf"
@@ -18,6 +19,12 @@ const runAll = async (): Promise<void> => {
   const decodedTx: Tx = Tx.decode(faucetTx.tx)
   console.log("DecodedTx:", decodedTx)
   console.log("Decoded messages:", decodedTx.body!.messages)
+
+  const sendMessage: MsgSend = MsgSend.decode(decodedTx.body!.messages[0].value);
+  console.log("Sent message:", sendMessage);
+
+  const faucet: string = sendMessage.fromAddress;
+  console.log("Faucet balances:", await client.getAllBalances(faucet));
 }
 
 runAll();
