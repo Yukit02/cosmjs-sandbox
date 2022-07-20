@@ -25,6 +25,16 @@ const runAll = async (): Promise<void> => {
 
   const faucet: string = sendMessage.fromAddress;
   console.log("Faucet balances:", await client.getAllBalances(faucet));
+
+  {
+    const rawLog = JSON.parse(faucetTx.rawLog);
+    console.log("Raw log:", JSON.stringify(rawLog, null, 4));
+
+    const faucet: string = rawLog[0].events
+      .find((eventEl: any) => eventEl.type === "coin_spent")
+      .attributes.find((attribute: any) => attribute.key === "spender").value;
+    console.log("Faucet address from raw log:", faucet);
+  }
 }
 
 runAll();
