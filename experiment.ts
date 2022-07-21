@@ -44,6 +44,14 @@ const runAll = async (): Promise<void> => {
     ", height:",
     await signingClient.getHeight()
   ) */
+
+  // console.log("Alice balance before:", await client.getAllBalances(alice))
+  // console.log("Faucet balance before:", await client.getAllBalances(faucet))
+  const result = await signingClient.sendTokens(alice, faucet, [{ denom: "uatom", amount: "100000" }], {
+      amount: [{ denom: "uatom", amount: "500" }],
+      gas: "200000",
+  })
+  // console.log("Transfer result:", result)
 }
 
 runAll();
